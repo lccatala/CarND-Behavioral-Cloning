@@ -37,7 +37,10 @@ train_generator = generator(train_samples, batch_size=batch_size)
 validation_generator = generator(validation_samples, batch_size=batch_size)
 """
 import csv
-def load_data():
+import zipfile
+
+def load_data(): 
+    # Read driving_log.csv's lines to get steering angles and image paths
     lines = []
     with open('../data/driving_log.csv', 'r') as csvfile:
       reader = csv.reader(csvfile)
@@ -87,21 +90,11 @@ def udacity_model():
     model.add(Cropping2D(cropping=((70,25), (0,0)), input_shape=(160,320,3)))
     model.add(Lambda(lambda x: x/255.0 - 0.5))
     model.add(Conv2D(24, 5, 5, activation='relu', subsample=(2, 2)))
-    #model.add(MaxPooling2D((2,2), padding='valid'))
-    
     model.add(Conv2D(36, 5, 5, activation='relu', subsample=(2, 2)))
-    #model.add(MaxPooling2D((2,2), padding='valid'))
-    
     model.add(Conv2D(48, 5, 5, activation='relu', subsample=(2, 2)))
-    #model.add(MaxPooling2D((2,2), padding='valid'))
-    
     model.add(Conv2D(64, 3, 3, activation='relu'))
-    #model.add(MaxPooling2D((2,2), padding='valid'))
-    
     model.add(Conv2D(64, 3, 3, activation='relu'))
-    #model.add(MaxPooling2D((2,2), padding='valid'))
-    
-    model.add(Dropout(0.5))
+    model.add(Dropout(0.8))
     model.add(Flatten())
     
     model.add(Dense(100, activation='relu'))
@@ -122,7 +115,7 @@ def plot_history(history_object, filename_fig):
     plt.legend(['training set', 'validation set'], loc='upper right')
     fig.savefig(filename_fig)
 
-EPOCHS = 10
+EPOCHS = 3
 
 if __name__ == '__main__':
     print('Loading data...')
@@ -134,4 +127,4 @@ if __name__ == '__main__':
     history_object = model.fit(X_train, y_train, validation_split=0.2, shuffle=True, epochs=EPOCHS)
     print('Done! Saving model in', filename_model)
     model.save(filename_model)
-    plot_history(history_object, 'with_dropout.png')
+    #plot_history(history_object, 'with_08_dropout.png')

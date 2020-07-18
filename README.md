@@ -120,3 +120,9 @@ I used this training data for training the model. The validation set helped dete
 ![Model Performance when training](./with_dropout.png)
 
 I used an adam optimizer so that manually training the learning rate wasn't necessary.
+
+#### 4. Future improvements:
+- Make the car drive properly on the second track
+- Augment dataset by changing brightness and adding random shadows
+- Try other activation functions like LeakyRelu
+- Use generators to feed data during training to avoid memory problems
